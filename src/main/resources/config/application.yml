@@ -1,0 +1,22 @@
+server:
+  port: 7878
+  servlet:
+    context-path: /jpa-postgres-practice
+    
+spring:
+    application:
+        name: jpa-postgres-practice
+    profiles:
+      active: local
+logging:
+  level:
+      org.springframework: INFO
+      com..pravinkumbhar: DEBUG
+
+
+
+---
+spring:
+  jpa:
+    hibernate:
+
