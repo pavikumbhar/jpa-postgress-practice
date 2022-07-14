@@ -15,8 +15,5 @@ logging:
 
 
 
----
-spring:
-  jpa:
-    hibernate:
+
 
