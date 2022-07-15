@@ -7,7 +7,7 @@ public enum Status {
     Active("Active"),
     InActive("InActive");
 
-    private  final String status;
+    private  final String statusCode;
      Status(String status){
-        this.status=status;
+        this.statusCode=status;
     }}

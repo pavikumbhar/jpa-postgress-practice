@@ -48,7 +48,7 @@ public class ProductController {
 	@GetMapping("/property")
 	public ResponseEntity<ProductDto> findByProductPropertyCode(@RequestParam("productPropertyCode") String productPropertyCode ) {
 		logger.info("findByProductPropertyCode  productPropertyCode: {}",productPropertyCode);
-		ProductDto productDto = productService.findByProductPropertyCode(productPropertyCode);
+		ProductDto productDto = productService.findByProductPropertyCodeSpec(productPropertyCode);
 		return ResponseEntity.ok(productDto);
 	}
 

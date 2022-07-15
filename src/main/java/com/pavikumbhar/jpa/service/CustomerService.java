@@ -10,5 +10,9 @@ public interface CustomerService {
 
      List<CustomerDto> searchCustomer(String firstName,String lastName,String email,int page,int size);
 
-     List<CustomerDto> searchCustomerByExample(String firstName,String lastName,String email,int page,int size);
+    List<CustomerDto> searchCustomerBySpecification(String firstName, String lastName, String email, int page, int size);
+
+    List<CustomerDto> searchCustomerBySpecificationBuilder(String firstName, String lastName, String email, int page, int size);
+
+    List<CustomerDto> searchCustomerByExample(String firstName, String lastName, String email, int page, int size);
 }

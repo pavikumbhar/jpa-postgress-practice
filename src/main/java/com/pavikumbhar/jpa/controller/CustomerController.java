@@ -30,7 +30,7 @@ public class CustomerController {
                                                             @RequestParam(required = false) String email,
                                                             @RequestParam(defaultValue = "0") int page,
                                                             @RequestParam(defaultValue = "10") int size){
-        List<CustomerDto> customerDtoList = customerService.searchCustomer(firstName,lastName, email,page,size);
+        List<CustomerDto> customerDtoList = customerService.searchCustomerBySpecificationBuilder(firstName,lastName, email,page,size);
         return ResponseEntity.ok(customerDtoList);
     }
 }
