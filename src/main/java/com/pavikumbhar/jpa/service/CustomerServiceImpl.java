@@ -13,7 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
+import static org.springframework.util.ObjectUtils.isEmpty;
+
+import static com.pavikumbhar.jpa.model.Customer.Fields;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +48,9 @@ public class CustomerServiceImpl implements  CustomerService{
     public List<CustomerDto> searchCustomerBySpecification(String firstName, String lastName, String email, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Customer> specification= Specification
-                .where(ObjectUtils.isEmpty(firstName) ? null : CustomerSpecifications.firstNameContains(firstName))
-                .and(ObjectUtils.isEmpty(lastName) ? null :CustomerSpecifications.lastNameContains(lastName))
-                .and(ObjectUtils.isEmpty(email) ? null :CustomerSpecifications.emailContains(email));
+                .where(isEmpty(firstName) ? null : CustomerSpecifications.firstNameContains(firstName))
+                .and(isEmpty(lastName) ? null :CustomerSpecifications.lastNameContains(lastName))
+                .and(isEmpty(email) ? null :CustomerSpecifications.emailContains(email));
         Page<Customer> customerPage =customerRepository.findAll(specification,pageable);
         List<Customer> customerList=customerPage.getContent();
         return customerMapper.toCustomerDtoList(customerList);
@@ -58,27 +61,27 @@ public class CustomerServiceImpl implements  CustomerService{
     public List<CustomerDto> searchCustomerBySpecificationBuilder(String firstName, String lastName, String email, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
        List<Filter> filters = new ArrayList<>();
-       if(!ObjectUtils.isEmpty(firstName)){
+       if(!isEmpty(firstName)){
           Filter firstNameLike = Filter.builder()
-                   .field(Customer.Fields.firstName.name())
+                   .field(Fields.firstName.name())
                    .operator(QueryOperator.LIKE)
                    .value(firstName)
                    .build();
            filters.add(firstNameLike);
        }
 
-       if(!ObjectUtils.isEmpty(lastName)) {
+       if(!isEmpty(lastName)) {
            Filter lastNameLike = Filter.builder()
-                   .field(Customer.Fields.lastName.name())
+                   .field(Fields.lastName.name())
                    .operator(QueryOperator.LIKE)
                    .value(lastName)
                    .build();
            filters.add(lastNameLike);
        }
 
-       if(!ObjectUtils.isEmpty(email)) {
+       if(!isEmpty(email)) {
            Filter emailLike = Filter.builder()
-                   .field(Customer.Fields.email.name())
+                   .field(Fields.email.name())
                    .operator(QueryOperator.LIKE)
                    .value(email)
                    .build();
@@ -98,7 +101,7 @@ public class CustomerServiceImpl implements  CustomerService{
 
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
-                 .withIgnoreCase("lastName", "firstName")
+                .withIgnoreCase(Fields.firstName.name(), Fields.lastName.name())
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Customer customerExampleObject = Customer.builder()

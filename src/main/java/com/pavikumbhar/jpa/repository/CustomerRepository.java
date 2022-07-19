@@ -21,6 +21,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
                                               Pageable pageable);
 
     @Query("SELECT c FROM Customer c WHERE LOWER(c.firstName) like lower(concat('%', :nameToFind,'%'))")
-    public List<Customer> findByNameFree(@Param("nameToFind") String name);
+    List<Customer> findByNameFree(@Param("nameToFind") String name);
 
 }
