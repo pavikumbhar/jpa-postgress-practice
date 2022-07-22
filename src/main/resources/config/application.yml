@@ -11,7 +11,7 @@ spring:
 logging:
   level:
       org.springframework: INFO
-      com..pravinkumbhar: DEBUG
+      com..pavkumbhar: DEBUG
 
 
 

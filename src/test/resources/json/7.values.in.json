@@ -1,0 +1,13 @@
+{
+  "filters": [
+    {
+      "key": "kernel",
+      "operator": "IN",
+      "fieldType": "STRING",
+      "values": ["5.13", "5.8"]
+    }
+  ],
+  "sorts": [],
+  "page": null,
+  "size": null
+}

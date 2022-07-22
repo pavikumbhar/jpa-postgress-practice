@@ -14,6 +14,7 @@ import com.pavikumbhar.jpa.specification.QueryOperator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -45,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 		logger.info("findByProductPropertyCode  productPropertyCode: {}",productPropertyCode);
 		Product product=productRepository.findByProductPropertyCodeLike(productPropertyCode);
 		if(product==null){
-			throw  new AppException("no data found");
+			throw  new AppException("product not found", HttpStatus.NOT_FOUND);
 		}
 		return productMapper.toProductDto(product);
 	}
@@ -66,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
 		List<Product>  productList= productRepository.findAll(spec);
 
 		if(productList.isEmpty()){
-			throw  new AppException("no data found");
+			throw  new AppException("product not found", HttpStatus.NOT_FOUND);
 		}
 		return productMapper.toProductDto(productList.get(0));
 	}
@@ -76,9 +77,9 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDto addProduct(ProductDto productDto) {
 		logger.info("addProduct  productDto: {}",productDto);
-		List< Product> productList=productRepository.findByProductCodeAndStatus(productDto.getProductCode(), Status.Active);
+		List< Product> productList=productRepository.findByProductCodeAndStatus(productDto.getProductCode(), Status.ACTIVE);
 		if(!productList.isEmpty()){
-			throw  new AppException("Product already present");
+			throw  new AppException("Product already present", HttpStatus.CONFLICT);
 		}
 		Product product=productRepository.save(productMapper.toProduct(productDto));
 		return productMapper.toProductDto(product);

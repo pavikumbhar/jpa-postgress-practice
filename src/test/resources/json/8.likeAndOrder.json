@@ -1,0 +1,18 @@
+{
+    "filters": [
+        {
+            "key": "name",
+            "operator": "LIKE",
+            "fieldType": "STRING",
+            "value": "Red"
+        }
+    ],
+    "sorts": [
+        {
+            "key": "releaseDate",
+            "direction": "DESC"
+        }
+    ],
+    "page": null,
+    "size": null
+}

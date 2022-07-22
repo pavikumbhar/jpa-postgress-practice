@@ -1,0 +1,14 @@
+{
+  "filters": [
+    {
+      "key": "usages",
+      "operator": "BETWEEN",
+      "fieldType": "INTEGER",
+      "value": 100,
+      "valueTo": 250
+    }
+  ],
+  "sorts": [],
+  "page": null,
+  "size": null
+}

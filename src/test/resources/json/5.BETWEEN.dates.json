@@ -1,0 +1,14 @@
+{
+  "filters": [
+    {
+      "key": "releaseDate",
+      "operator": "BETWEEN",
+      "fieldType": "DATE",
+      "value": "01-03-2022 00:00:00",
+      "valueTo": "11-03-2022 23:59:59"
+    }
+  ],
+  "sorts": [],
+  "page": null,
+  "size": null
+}
