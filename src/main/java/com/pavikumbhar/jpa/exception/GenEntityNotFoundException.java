@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 public class GenEntityNotFoundException extends RuntimeException {
 
-    public GenEntityNotFoundException(Class clazz, String... searchParamsMap) {
+    public GenEntityNotFoundException(Class<?> clazz, String... searchParamsMap) {
         super(GenEntityNotFoundException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
     }
 

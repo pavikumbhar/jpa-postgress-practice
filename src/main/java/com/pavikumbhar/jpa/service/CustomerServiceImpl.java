@@ -15,8 +15,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
-import static com.pavikumbhar.jpa.model.Customer.Fields;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +61,7 @@ public class CustomerServiceImpl implements  CustomerService{
        List<Filter> filters = new ArrayList<>();
        if(!isEmpty(firstName)){
           Filter firstNameLike = Filter.builder()
-                   .field(Fields.firstName.name())
+                   .field(Customer.Fields.firstName.name())
                    .operator(QueryOperator.LIKE)
                    .value(firstName)
                    .build();
@@ -72,7 +70,7 @@ public class CustomerServiceImpl implements  CustomerService{
 
        if(!isEmpty(lastName)) {
            Filter lastNameLike = Filter.builder()
-                   .field(Fields.lastName.name())
+                   .field(Customer.Fields.lastName.name())
                    .operator(QueryOperator.LIKE)
                    .value(lastName)
                    .build();
@@ -81,7 +79,7 @@ public class CustomerServiceImpl implements  CustomerService{
 
        if(!isEmpty(email)) {
            Filter emailLike = Filter.builder()
-                   .field(Fields.email.name())
+                   .field(Customer.Fields.email.name())
                    .operator(QueryOperator.LIKE)
                    .value(email)
                    .build();
@@ -101,7 +99,7 @@ public class CustomerServiceImpl implements  CustomerService{
 
         ExampleMatcher matcher = ExampleMatcher
                 .matching()
-                .withIgnoreCase(Fields.firstName.name(), Fields.lastName.name())
+                .withIgnoreCase(Customer.Fields.firstName.name(), Customer.Fields.lastName.name())
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
         Customer customerExampleObject = Customer.builder()

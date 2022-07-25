@@ -221,6 +221,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppException.class)
     protected ResponseEntity<Object> appException(AppException ex) {
         ApiError apiError = new ApiError(ex.getStatus()!=null?ex.getStatus(): INTERNAL_SERVER_ERROR);
+        apiError.setDebugMessage(ex.getMessage());
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }

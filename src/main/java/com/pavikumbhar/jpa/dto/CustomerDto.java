@@ -12,7 +12,6 @@ import static com.pavikumbhar.jpa.constant.AppConstant.YYYY_MM_DD_HH_MM_SS;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class  CustomerDto {
 
 
