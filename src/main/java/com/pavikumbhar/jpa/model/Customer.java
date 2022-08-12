@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name="CUSTOMER")
-@FieldNameConstants(asEnum = true)
 @EntityListeners(AuditingEntityListener.class)
+@FieldNameConstants(asEnum = true)
 public class Customer {
 
     @Id

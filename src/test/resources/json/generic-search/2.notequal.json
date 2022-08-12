@@ -1,0 +1,18 @@
+{
+  "filters": [
+    {
+      "key": "name",
+      "operator": "NOT_EQUAL",
+      "fieldType": "STRING",
+      "value": "CentOS"
+    }
+  ],
+  "sorts": [
+    {
+      "key": "releaseDate",
+      "direction": "ASC"
+    }
+  ],
+  "page": null,
+  "size": null
+}

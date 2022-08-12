@@ -45,7 +45,7 @@ public class ProductProperty {
 	@Column(name="STATUS")
 	private Status status;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="PRODUCT_ID", insertable = false, updatable = false)
 	private Product product;
 

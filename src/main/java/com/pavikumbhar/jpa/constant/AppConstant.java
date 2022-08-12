@@ -1,8 +1,10 @@
 package com.pavikumbhar.jpa.constant;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@UtilityClass
+
+@NoArgsConstructor(access= AccessLevel.PRIVATE)
 public class AppConstant {
 
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd hh:mm:ss";
