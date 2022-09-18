@@ -1,7 +1,11 @@
 package com.pavikumbhar.jpa.controller;
 
+import com.pavikumbhar.jpa.dto.ProductCriteria;
 import com.pavikumbhar.jpa.dto.ProductPropertyDto;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +19,14 @@ import com.pavikumbhar.jpa.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/product/")
+@Validated
 public class ProductController {
 
 	private final ProductService productService;
@@ -48,7 +56,9 @@ public class ProductController {
 	@GetMapping("/property")
 	public ResponseEntity<ProductDto> findByProductPropertyCode(@RequestParam("productPropertyCode") String productPropertyCode ) {
 		logger.info("findByProductPropertyCode  productPropertyCode: {}",productPropertyCode);
-		ProductDto productDto = productService.findByProductPropertyCodeSpec(productPropertyCode);
+		//ProductDto productDto = productService.findByProductPropertyCodeSpec(productPropertyCode);
+		ProductDto productDto = productService.findByProductPropertyCode(productPropertyCode);
+
 		return ResponseEntity.ok(productDto);
 	}
 
@@ -59,5 +69,15 @@ public class ProductController {
 
 		return  ResponseEntity.ok(productProperty);
 	}
+
+
+	@GetMapping("/search")
+	public ResponseEntity<ProductCriteria> searchProduct(@Valid ProductCriteria productCriteria){
+		logger.info("searchProduct productCriteria : {}",productCriteria);
+		return  ResponseEntity.ok(productCriteria);
+	}
+
+
+
 
 }

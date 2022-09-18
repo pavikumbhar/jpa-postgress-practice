@@ -13,6 +13,9 @@ import com.pavikumbhar.jpa.specification.Filter;
 import com.pavikumbhar.jpa.specification.QueryOperator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -44,11 +47,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDto findByProductPropertyCode(String productPropertyCode) {
 		logger.info("findByProductPropertyCode  productPropertyCode: {}",productPropertyCode);
-		Product product=productRepository.findByProductPropertyCodeLike(productPropertyCode);
-		if(product==null){
+		Pageable pageRequest = PageRequest.of(0, 2);
+		 Page<Product> product = productRepository.findByProductPropertyCodeLike(productPropertyCode, pageRequest);
+
+		Product x = product.getContent().stream().findFirst().orElse(null);
+		if(x==null){
 			throw  new AppException("product not found", HttpStatus.NOT_FOUND);
 		}
-		return productMapper.toProductDto(product);
+		return productMapper.toProductDto(x);
 	}
 
 	@Transactional

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -84,6 +86,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers,
             HttpStatus status,
             WebRequest request) {
+
         ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
@@ -225,5 +228,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
+
+
 
 }
