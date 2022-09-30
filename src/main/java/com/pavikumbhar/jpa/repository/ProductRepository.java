@@ -15,19 +15,34 @@ public interface ProductRepository  extends JpaRepository<Product, Long> , JpaSp
 
         List<Product> findByProductCodeAndStatus(String productCode, Status status);
         @Query("SELECT  DISTINCT product FROM  Product product INNER JOIN FETCH  product.productProperties property WHERE" +
-        " property.status='Active' AND property.productPropertyCode=?1")
+        " LOWER(property.status)=LOWER('Active') AND property.productPropertyCode=?1")
         Product findByProductPropertyCode(String productPropertyCode);
 
 
         @Query("SELECT  DISTINCT product FROM  Product product INNER JOIN FETCH  product.productProperties property" +
-        " WHERE property.status='Active' AND property.productPropertyCode LIKE %:productPropertyCode%")
+        " WHERE LOWER(property.status)=LOWER('Active') AND property.productPropertyCode LIKE %:productPropertyCode%")
         Product findByProductPropertyCodeLike(String productPropertyCode);
 
 
+        /**
+         *  Hibernate HHH000104 firstResult maxResults warning using Spring Data JPA
+         * @param productPropertyCode
+         * @param pageable
+         * @return
+         */
         @Query( value = "SELECT  DISTINCT product FROM  Product product INNER JOIN FETCH  product.productProperties property" +
-        " WHERE property.status='Active' AND property.productPropertyCode LIKE %:productPropertyCode%"
+        " WHERE LOWER(property.status)=LOWER('Active') AND property.productPropertyCode LIKE %:productPropertyCode%"
         ,countQuery = "SELECT  count (DISTINCT product) FROM  Product product INNER JOIN   product.productProperties property" +
-        " WHERE property.status='Active' AND property.productPropertyCode LIKE %:productPropertyCode%")
+        " WHERE LOWER(property.status)=LOWER('Active') AND property.productPropertyCode LIKE %:productPropertyCode%")
         Page<Product> findByProductPropertyCodeLike(String productPropertyCode, Pageable pageable);
+        @Query( value = "SELECT  DISTINCT product.productId FROM  Product product INNER JOIN product.productProperties property" +
+                " WHERE LOWER(property.status)=LOWER('Active') AND property.productPropertyCode LIKE %:productPropertyCode%")
+        Page<Long> findProductIdsByProductPropertyCodeLike(String productPropertyCode, Pageable pageable);
+
+        @Query( value = "SELECT  DISTINCT product FROM  Product product INNER JOIN product.productProperties property" +
+                " WHERE LOWER(property.status)=LOWER('Active') " +
+                " AND property.productPropertyCode LIKE %:productPropertyCode%" +
+                " AND product.productId IN (:ids)")
+        List<Product> findByProductPropertyCodeLikeInProductId(String productPropertyCode, List<Long> ids);
 
 }

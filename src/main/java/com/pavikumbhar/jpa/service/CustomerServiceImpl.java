@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDto> searchCustomer(String firstName, String lastName, String email, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size,Sort.by("customerId").descending());
         Page<Customer> customerPage = customerRepository.findCustomerByNameAndEmail(firstName, lastName, email,
                 pageable);
         List<Customer> customerList = customerPage.getContent();

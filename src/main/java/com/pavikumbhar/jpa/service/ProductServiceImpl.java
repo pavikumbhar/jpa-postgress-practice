@@ -14,9 +14,11 @@ import com.pavikumbhar.jpa.specification.QueryOperator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -47,13 +49,18 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public ProductDto findByProductPropertyCode(String productPropertyCode) {
 		logger.info("findByProductPropertyCode  productPropertyCode: {}",productPropertyCode);
-		Pageable pageRequest = PageRequest.of(0, 2);
-		 Page<Product> product = productRepository.findByProductPropertyCodeLike(productPropertyCode, pageRequest);
+		 Pageable pageRequest = PageRequest.of(0, 2);
 
-		Product x = product.getContent().stream().findFirst().orElse(null);
-		if(x==null){
+		/* Page<Product> product = productRepository.findByProductPropertyCodeLike(productPropertyCode, pageRequest); */
+		 Page<Long>  productIds = productRepository.findProductIdsByProductPropertyCodeLike(productPropertyCode, pageRequest);
+		if(productIds.getContent().isEmpty()){
 			throw  new AppException("product not found", HttpStatus.NOT_FOUND);
 		}
+		 List<Product> products = productRepository.findByProductPropertyCodeLikeInProductId(productPropertyCode, productIds.getContent());
+		Page<Product> page = PageableExecutionUtils.getPage(products, pageRequest, () -> productIds.getTotalElements());
+		Page<Product> page2 = new PageImpl<>(products, pageRequest, productIds.getTotalElements());
+		Product x = products.stream().findFirst().orElse(null);
+
 		return productMapper.toProductDto(x);
 	}
 
