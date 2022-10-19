@@ -1,9 +1,11 @@
 package com.pavikumbhar.jpa.service;
 
+import com.pavikumbhar.jpa.dto.AppPage;
 import com.pavikumbhar.jpa.dto.CustomerDto;
 import com.pavikumbhar.jpa.mapper.CustomerMapper;
 import com.pavikumbhar.jpa.model.Customer;
 import com.pavikumbhar.jpa.repository.CustomerRepository;
+import com.pavikumbhar.jpa.repository.EntitySpecification;
 import com.pavikumbhar.jpa.specification.CustomSpecificationBuilder;
 import com.pavikumbhar.jpa.specification.CustomerSpecifications;
 import com.pavikumbhar.jpa.specification.Filter;
@@ -36,10 +38,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDto> searchCustomer(String firstName, String lastName, String email, int page, int size) {
         Pageable pageable = PageRequest.of(page, size,Sort.by("customerId").descending());
-        Page<Customer> customerPage = customerRepository.findCustomerByNameAndEmail(firstName, lastName, email,
-                pageable);
-        List<Customer> customerList = customerPage.getContent();
-        return customerMapper.toCustomerDtoList(customerList);
+        Page<Customer> customerPage = customerRepository.findCustomerByNameAndEmail(firstName, lastName, email, pageable);
+        return customerMapper.toCustomerDtoList( customerPage.getContent());
     }
 
     @Override
@@ -114,4 +114,27 @@ public class CustomerServiceImpl implements CustomerService {
         List<Customer> customerList = customerPage.getContent();
         return customerMapper.toCustomerDtoList(customerList);
     }
+
+    @Override
+    public AppPage<CustomerDto> searchCustomer(String inputString, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size).withSort(Sort.Direction.DESC,"customerId");
+        //using query
+        Page<Customer> customerPage=customerRepository.findAllByInputString(inputString,pageable);
+        List<Customer> customerList = customerPage.getContent();
+
+       //using specification
+        Page<Customer> customerPageObject = customerRepository.findAll(EntitySpecification.textInAllColumns(inputString),pageable);
+       // return customerMapper.toCustomerDtoList(customers);
+     return new AppPage<>(customerMapper.toCustomerDtoList(customerPageObject.getContent()), pageable, customerPageObject.getTotalElements());
+    }
+
+    @Override
+    public AppPage<CustomerDto> searchCustomerV2(String firstName, String lastName, String email, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size,Sort.by("customerId").descending().and(Sort.by("firstName").ascending()));
+        Page<Customer> customerPage = customerRepository.findCustomerByNameAndEmail(firstName, lastName, email, pageable);
+      return new AppPage<>(customerMapper.toCustomerDtoList(customerPage.getContent()), pageable, customerPage.getTotalElements());
+    }
+
+
 }

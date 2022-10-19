@@ -1,11 +1,7 @@
 package com.pavikumbhar.jpa.model;
 
 import com.pavikumbhar.jpa.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 @Entity
 @Table(name="PRODUCT")
 @FieldNameConstants (asEnum = true)
@@ -42,6 +39,7 @@ public class Product {
 	private Status status;
 	
 	@Builder.Default
+	@ToString.Exclude
 	@OneToMany(mappedBy ="product", fetch = FetchType.LAZY )
 	private List<ProductProperty> productProperties=new ArrayList<>();
 
