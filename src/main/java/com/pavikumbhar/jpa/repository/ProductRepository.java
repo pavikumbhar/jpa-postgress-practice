@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,12 +17,12 @@ public interface ProductRepository  extends JpaRepository<Product, Long> , JpaSp
         List<Product> findByProductCodeAndStatus(String productCode, Status status);
         @Query("SELECT  DISTINCT product FROM  Product product INNER JOIN FETCH  product.productProperties property WHERE" +
         " LOWER(property.status)=LOWER('Active') AND property.productPropertyCode=?1")
-        Product findByProductPropertyCode(String productPropertyCode);
+        Product findByProductPropertyCode(@Param("productPropertyCode")  String productPropertyCode);
 
 
         @Query("SELECT  DISTINCT product FROM  Product product INNER JOIN FETCH  product.productProperties property" +
         " WHERE LOWER(property.status)=LOWER('Active') AND property.productPropertyCode LIKE %:productPropertyCode%")
-        Product findByProductPropertyCodeLike(String productPropertyCode);
+        Product findByProductPropertyCodeLike(@Param("productPropertyCode") String productPropertyCode);
 
 
         /**
@@ -37,12 +38,12 @@ public interface ProductRepository  extends JpaRepository<Product, Long> , JpaSp
         Page<Product> findByProductPropertyCodeLike(String productPropertyCode, Pageable pageable);
         @Query( value = "SELECT  DISTINCT product.productId FROM  Product product INNER JOIN product.productProperties property" +
                 " WHERE LOWER(property.status)=LOWER('Active') AND property.productPropertyCode LIKE %:productPropertyCode%")
-        Page<Long> findProductIdsByProductPropertyCodeLike(String productPropertyCode, Pageable pageable);
+        Page<Long> findProductIdsByProductPropertyCodeLike(@Param("productPropertyCode") String productPropertyCode, Pageable pageable);
 
         @Query( value = "SELECT  DISTINCT product FROM  Product product INNER JOIN product.productProperties property" +
                 " WHERE LOWER(property.status)=LOWER('Active') " +
                 " AND property.productPropertyCode LIKE %:productPropertyCode%" +
                 " AND product.productId IN (:ids)")
-        List<Product> findByProductPropertyCodeLikeInProductId(String productPropertyCode, List<Long> ids);
+        List<Product> findByProductPropertyCodeLikeInProductId(@Param("productPropertyCode") String productPropertyCode, @Param("ids") List<Long> ids);
 
 }
