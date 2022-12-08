@@ -1,5 +1,6 @@
 package com.pavikumbhar.jpa.controller;
 
+import com.pavikumbhar.jpa.dto.AppPage;
 import com.pavikumbhar.jpa.dto.CustomerDto;
 
 import com.pavikumbhar.jpa.service.CustomerService;
@@ -30,7 +31,25 @@ public class CustomerController {
                                                             @RequestParam(required = false) String email,
                                                             @RequestParam(defaultValue = "0") int page,
                                                             @RequestParam(defaultValue = "10") int size){
-        List<CustomerDto> customerDtoList = customerService.searchCustomerBySpecificationBuilder(firstName,lastName, email,page,size);
+       // List<CustomerDto> customerDtoList = customerService.searchCustomerBySpecificationBuilder(firstName,lastName, email,page,size);
+        List<CustomerDto> customerDtoList = customerService.searchCustomer(firstName, lastName, email, page, size);
+
         return ResponseEntity.ok(customerDtoList);
     }
+
+    @GetMapping("/v2")
+    public ResponseEntity<AppPage<CustomerDto>> searchCustomerv2(@RequestParam(required = false) String firstName,
+                                                                 @RequestParam(required = false) String lastName,
+                                                                 @RequestParam(required = false) String email,
+                                                                 @RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10") int size){
+        // List<CustomerDto> customerDtoList = customerService.searchCustomerBySpecificationBuilder(firstName,lastName, email,page,size);
+        AppPage<CustomerDto> customerDtoList = customerService.searchCustomerV2(firstName, lastName, email, page, size);
+
+        return ResponseEntity.ok(customerDtoList);
+    }
+
+
+
+
 }

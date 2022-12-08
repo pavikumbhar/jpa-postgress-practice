@@ -14,7 +14,6 @@ import static com.pavikumbhar.jpa.constant.AppConstant.YYYY_MM_DD_HH_MM_SS;
 @Builder
 public class  CustomerDto {
 
-
     private long customerId;
 
     private String firstName;

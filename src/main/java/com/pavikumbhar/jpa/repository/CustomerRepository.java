@@ -12,9 +12,10 @@ import java.util.List;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
 
-    @Query("SELECT c FROM Customer c WHERE (:firstName is null or LOWER(c.firstName) LIKE LOWER(concat(:firstName, '%'))) AND " +
-           " (:lastName is null or LOWER(c.lastName) LIKE LOWER(concat(:lastName, '%'))) AND" +
-            "(:email is null or LOWER(c.email) LIKE LOWER(concat(:email, '%')))")
+    @Query(value = "SELECT c FROM Customer c  " +
+            " WHERE (:firstName IS NULL OR TRIM(BOTH :firstName) ='' OR LOWER(c.firstName) LIKE LOWER(CONCAT(:firstName, '%'))) " +
+            " AND  (:lastName IS NULL OR TRIM(BOTH :lastName) ='' OR LOWER(c.lastName) LIKE LOWER(CONCAT(:lastName, '%'))) " +
+            " AND  (:email IS NULL OR TRIM(BOTH :email) ='' OR LOWER(c.email) LIKE LOWER(CONCAT(:email, '%')))")
     Page<Customer> findCustomerByNameAndEmail(@Param("firstName") String firstName,
                                               @Param("lastName") String lastName,
                                               @Param("email") String email,
@@ -22,5 +23,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>, JpaSp
 
     @Query("SELECT c FROM Customer c WHERE LOWER(c.firstName) like lower(concat('%', :nameToFind,'%'))")
     List<Customer> findByNameFree(@Param("nameToFind") String name);
+
+    @Query(value = "SELECT c FROM Customer c WHERE (:inputString IS NULL OR LOWER(c.firstName) LIKE LOWER(CONCAT('%',:inputString, '%'))) " +
+            " OR  (:inputString IS NULL OR :inputString ='' OR LOWER(c.lastName) LIKE LOWER(CONCAT('%',:inputString, '%'))) " +
+            " OR  (:inputString IS NULL OR :inputString ='' OR LOWER(c.email) LIKE LOWER(CONCAT('%',:inputString, '%')))")
+    Page<Customer> findAllByInputString(String inputString, Pageable pageable);
 
 }
